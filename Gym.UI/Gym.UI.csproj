@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gym.Business\Gym.Business.csproj" />
+    <ProjectReference Include="..\Gym.Data\Gym.Data.csproj" />
   
   </ItemGroup>
 
@@ -18,5 +19,12 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="Copy to Output Directory" /></VisualStudio></ProjectExtensions>
 
 </Project>
