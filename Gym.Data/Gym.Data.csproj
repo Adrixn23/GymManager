@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gym.Entitites\Gym.Entitites.csproj" />
+    <ProjectReference Include="..\Gym.Entitites\Gym.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

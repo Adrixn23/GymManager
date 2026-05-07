@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -8,13 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gym.Data\Gym.Data.csproj" />
-    <ProjectReference Include="..\Gym.Entitites\Gym.Entitites.csproj" />
+
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="DTOs\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="LogicResults\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
