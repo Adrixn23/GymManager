@@ -9,5 +9,15 @@ namespace Gym.Data.Context
 {
     public class GymDbContext : DbContext
     {
+
+        GymDbContext(DbContextOptions<GymDbContext> options) : base(options) {
+
+
+        }
+
+       
+
+
+
     }
 }
