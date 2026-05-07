@@ -1,9 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36930.0 d17.14
+VisualStudioVersion = 17.14.36930.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gym.Data", "Gym.Data\Gym.Data.csproj", "{CC20E0CC-0EDC-4C7A-87A8-30BCF7D634D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gym.Domain", "Gym.Business\Gym.Domain.csproj", "{24DEE2F6-7A95-4F1D-A874-72DC0EC0A77C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gym.UI", "Gym.UI\Gym.UI.csproj", "{4F398B45-0A76-4F53-BF4D-C87F4902AFF3}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC20E0CC-0EDC-4C7A-87A8-30BCF7D634D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC20E0CC-0EDC-4C7A-87A8-30BCF7D634D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC20E0CC-0EDC-4C7A-87A8-30BCF7D634D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC20E0CC-0EDC-4C7A-87A8-30BCF7D634D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24DEE2F6-7A95-4F1D-A874-72DC0EC0A77C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24DEE2F6-7A95-4F1D-A874-72DC0EC0A77C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24DEE2F6-7A95-4F1D-A874-72DC0EC0A77C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24DEE2F6-7A95-4F1D-A874-72DC0EC0A77C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F398B45-0A76-4F53-BF4D-C87F4902AFF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F398B45-0A76-4F53-BF4D-C87F4902AFF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F398B45-0A76-4F53-BF4D-C87F4902AFF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F398B45-0A76-4F53-BF4D-C87F4902AFF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
