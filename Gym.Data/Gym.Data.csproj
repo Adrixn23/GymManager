@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Gym.Entitites\Gym.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

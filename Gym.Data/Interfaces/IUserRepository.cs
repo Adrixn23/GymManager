@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gym.Domain.Entities;
-using Gym.Entities;
+
 
 namespace Gym.Data.Interfaces
 {
@@ -13,5 +13,9 @@ namespace Gym.Data.Interfaces
         Task<User?> GetByUsernameAsync(string username);
 
         Task AddAsync(User user);
+
+        Task<bool> ExistsAsync(string username);
+
+       Task UpdateLastAccessAsync(int userId);
     }
 }
