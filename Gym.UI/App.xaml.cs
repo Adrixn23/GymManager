@@ -32,9 +32,14 @@ namespace Gym.UI
 
                     // 2. Registramos nuestras Ventanas (Windows) para que el DI pueda crearlas
                     services.AddSingleton<MainWindow>();
+                    services.AddTransient<Gym.UI.Views.LoginView>();
+                    services.AddTransient<Gym.UI.ViewModels.LoginViewModel>();
 
-                    // AQUÍ registraremos los Servicios y Repositorios en los siguientes pasos
-                    // Ejemplo: services.AddScoped<IAuthService, AuthService>();
+                    // 3. Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
+                    services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
+
+                    // 4. Registrar el Servicio de Negocio
+                    services.AddScoped<Gym.Business.Interfaces.IAuthService, Gym.Business.Services.AuthService>();
                 })
                 .Build();
         }
@@ -44,9 +49,40 @@ namespace Gym.UI
             // Arrancamos el host
             await _host.StartAsync();
 
-            // Pedimos la MainWindow al contenedor y la mostramos
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            // SCRIPT TEMPORAL DE INYECCIÓN (SEEDER)
+            using (var scope = _host.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
+                
+                // Verificamos si no hay usuarios en la base de datos
+                if (!await dbContext.Users.AnyAsync())
+                {
+                    // Generamos un usuario administrador por defecto
+                    string salt = BCrypt.Net.BCrypt.GenerateSalt(12);
+                    string hash = BCrypt.Net.BCrypt.HashPassword("admin123", salt);
+
+                    var adminUser = new Gym.Domain.Entities.User
+                    {
+                        Username = "admin",
+                        PasswordHash = hash,
+                        Salt = salt,
+                        Role = "Administrador",
+                        FullName = "Administrador del Sistema",
+                        Email = "admin@cilgym.com",
+                        Phone = "000-000-0000",
+                        IsActive = true,
+                        CreatedAt = System.DateTime.Now,
+                        LastAccess = System.DateTime.Now
+                    };
+
+                    dbContext.Users.Add(adminUser);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            // Pedimos la LoginView al contenedor y la mostramos
+            var loginWindow = _host.Services.GetRequiredService<Gym.UI.Views.LoginView>();
+            loginWindow.Show();
 
             base.OnStartup(e);
         }

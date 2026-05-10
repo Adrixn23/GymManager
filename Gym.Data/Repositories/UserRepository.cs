@@ -14,7 +14,7 @@ namespace Gym.Data.Repositories
     public class UserRepository : IUserRepository
     {
 
-        private readonly GymDbContext _context;
+        private readonly GymDbContext _context; 
 
         public UserRepository(GymDbContext context) {
 

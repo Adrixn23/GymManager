@@ -1,0 +1,114 @@
+<Window x:Class="Gym.UI.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login - Cil Gym SRL" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#F0F2F5"
+        FontFamily="Segoe UI">
+    
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="LogoGrid" 
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)"
+                                     From="-15" To="0" Duration="0:0:1" AutoReverse="True" RepeatBehavior="2.5x">
+                        <DoubleAnimation.EasingFunction>
+                            <QuadraticEase EasingMode="EaseInOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid>
+        <Border Background="White" Width="380" Height="520" CornerRadius="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect Color="#DDDDDD" BlurRadius="15" ShadowDepth="4" Opacity="0.8"/>
+            </Border.Effect>
+            
+            <StackPanel Margin="40,30,40,30">
+                <!-- Logo Animado -->
+                <Grid Width="70" Height="70" HorizontalAlignment="Center" x:Name="LogoGrid">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Ellipse Fill="#6C63FF" />
+                    <!-- Pesa minimalista -->
+                    <Path Data="M 20,35 L 50,35 M 20,25 L 20,45 M 50,25 L 50,45 M 26,28 L 26,42 M 44,28 L 44,42" 
+                          Stroke="White" StrokeThickness="4" StrokeEndLineCap="Round" StrokeStartLineCap="Round" />
+                </Grid>
+
+                <!-- Textos -->
+                <TextBlock Text="Cil Gym SRL" FontSize="22" FontWeight="Bold" Foreground="#2B2B2B" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                <TextBlock Text="Sistema de Gestión" FontSize="14" Foreground="#888888" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                <!-- Contenedor Usuario -->
+                <Grid Margin="0,0,0,15">
+                    <Border Background="#333333" CornerRadius="8" Height="45"/>
+                    <Grid Margin="15,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Icono Usuario (Path simulando candado/persona) -->
+                        <Path Data="M 12,18 A 6,6 0 1 1 12,6 A 6,6 0 1 1 12,18 Z M 6,24 A 6,6 0 0 1 18,24" Stroke="#999999" StrokeThickness="2" VerticalAlignment="Center"/>
+                        
+                        <TextBlock Text="Usuario" Foreground="#777777" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" IsHitTestVisible="False" x:Name="UserPlaceholder"/>
+                        <TextBox x:Name="UsernameTextBox" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="14" VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0" CaretBrush="White" TextChanged="UsernameTextBox_TextChanged"/>
+                    </Grid>
+                </Grid>
+
+                <!-- Contenedor Contraseña -->
+                <Grid Margin="0,0,0,30">
+                    <Border Background="#333333" CornerRadius="8" Height="45"/>
+                    <Grid Margin="15,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Icono Candado -->
+                        <Path Data="M 8,12 L 8,10 A 4,4 0 0 1 16,10 L 16,12 M 6,12 L 18,12 L 18,22 L 6,22 Z" Stroke="#999999" StrokeThickness="2" VerticalAlignment="Center"/>
+                        
+                        <TextBlock Text="Contraseña" Foreground="#777777" FontSize="14" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="1" IsHitTestVisible="False" x:Name="PassPlaceholder"/>
+                        <PasswordBox x:Name="PasswordInput" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="14" VerticalAlignment="Center" Grid.Column="1" Margin="10,0,0,0" CaretBrush="White" PasswordChanged="PasswordInput_PasswordChanged"/>
+                    </Grid>
+                </Grid>
+
+                <!-- Mensaje de Error -->
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF6B6B" FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,15" TextWrapping="Wrap" />
+
+                <!-- Botón -->
+                <Button x:Name="LoginButton" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=PasswordInput}" Height="45" Foreground="White" FontSize="14" FontWeight="SemiBold" Cursor="Hand" BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BtnBorder" Background="#222222" CornerRadius="8">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="BtnBorder" Property="Background" Value="#444444"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="BtnBorder" Property="Background" Value="#111111"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    Iniciar Sesión
+                </Button>
+
+                <!-- Footer -->
+                <TextBlock Text="v1.0.0" Foreground="#BBBBBB" FontSize="12" HorizontalAlignment="Center" Margin="0,25,0,10"/>
+                <Separator Background="#EEEEEE" Margin="40,0"/>
+                <TextBlock Text="© 2026 Cil Gym SRL · Todos los derechos reservados" Foreground="#AAAAAA" FontSize="11" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="0,15,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,31 +1,32 @@
-﻿using Gym.Business.DTOs;
+﻿
+using Gym.Business.DTOs;
 using Gym.Business.Interfaces;
 using Gym.Business.LogicResults;
-using BCrypt.Net;
 using Gym.Data.Interfaces;
+
 namespace Gym.Business.Services
 
 {
     public class AuthService : IAuthService
     {
 
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        public AuthService(IUnitOfWork unitOfWork)
+        {
 
-        public AuthService(IUserRepository userRepository) {
-
-            _userRepository =  userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<OperationResult<UserDTO>> LoginAsync(string username, string password) {
 
-            var exist = await _userRepository.ExistsAsync(username);
+            var exist = await _unitOfWork.Users.ExistsAsync(username);
             if (!exist)
             {
                 return OperationResult<UserDTO>.Fail("Usuario No se encontro. ");
             }
 
 
-            var user = await _userRepository.GetByUsernameAsync(username);
+            var user = await _unitOfWork.Users.GetByUsernameAsync(username);
 
 
 
@@ -44,8 +45,8 @@ namespace Gym.Business.Services
             }
 
 
-            await _userRepository.UpdateLastAccessAsync(user.UserId);
-
+            await _unitOfWork.Users.UpdateLastAccessAsync(user.UserId);
+            await _unitOfWork.SaveChangesAsync();
 
             var userDTO = new UserDTO
             {
@@ -54,7 +55,7 @@ namespace Gym.Business.Services
                 FullName = user.FullName,
                 Role = user.Role
             };
-
+           
             return OperationResult<UserDTO>.Ok(userDTO, "Login exitoso");
 
 
