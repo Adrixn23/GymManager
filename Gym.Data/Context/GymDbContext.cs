@@ -21,10 +21,11 @@ namespace Gym.Data.Context
         }
 
        public DbSet<User> Users { get; set; }
+        public DbSet<Member> Members { get; set; }
 
         // Este método es el "mapeador". Aquí le decimos a EF exactamente
         // cómo se llama la tabla y qué reglas tiene.
-protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -47,7 +48,23 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
                 entity.Property(e => e.PasswordHash).IsRequired();
                 entity.Property(e => e.Salt).IsRequired();
 
+
+                modelBuilder.Entity<Member>(entity =>
+                {
+                    entity.ToTable("socios");
+                    entity.HasKey(e => e.MemberId);
+                    entity.Property(e => e.FullName).IsRequired().HasMaxLength(100);
+                    entity.Property(e => e.RowVersion).IsRowVersion();
+                    entity.Property(e => e.PlanPrice).HasColumnType("decimal(10, 2)");
+                    entity.Property(e => e.PlanType).HasMaxLength(50);
+                    entity.Property(e => e.MembershipStatus).IsRequired().HasMaxLength(20) ;
+
+
+                });
+
             });
+
+           
         }
 
     }

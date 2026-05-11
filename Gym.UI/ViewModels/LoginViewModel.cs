@@ -57,8 +57,23 @@ namespace Gym.UI.ViewModels
                 // Limpiamos la clave de la memoria visual
                 passwordBox.Clear();
                 
-                // ¡Éxito! (Aquí luego abriremos el Dashboard real)
-                MessageBox.Show($"¡Bienvenido {result.Data!.FullName}!\nRol: {result.Data.Role}", "Login Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Obtenemos el contenedor de DI
+                var services = Gym.UI.App.AppHost!.Services;
+
+                // Solicitamos la ventana principal
+                var mainWindow = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<Gym.UI.MainWindow>(services);
+                
+                // Configuramos los datos del usuario en el MainViewModel
+                if (mainWindow.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.Initialize(result.Data!.FullName, result.Data.Role);
+                }
+
+                // Hacemos el cambio de pantallas
+                var loginWindow = Window.GetWindow(passwordBox);
+                Application.Current.MainWindow = mainWindow;
+                mainWindow.Show();
+                loginWindow?.Close();
             }
             else
             {

@@ -11,11 +11,11 @@ namespace Gym.UI
     public partial class App : Application
     {
         // El Host es el contenedor de todos nuestros servicios y configuración
-        private readonly IHost _host;
+        public static IHost? AppHost { get; private set; }
 
         public App()
         {
-            _host = Host.CreateDefaultBuilder()
+            AppHost = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration((context, config) =>
                 {
                     // Configuramos de dónde leer los datos (appsettings.json)
@@ -34,6 +34,7 @@ namespace Gym.UI
                     services.AddSingleton<MainWindow>();
                     services.AddTransient<Gym.UI.Views.LoginView>();
                     services.AddTransient<Gym.UI.ViewModels.LoginViewModel>();
+                    services.AddTransient<Gym.UI.ViewModels.MainViewModel>();
 
                     // 3. Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
                     services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
@@ -47,10 +48,10 @@ namespace Gym.UI
         protected override async void OnStartup(StartupEventArgs e)
         {
             // Arrancamos el host
-            await _host.StartAsync();
+            await AppHost!.StartAsync();
 
             // SCRIPT TEMPORAL DE INYECCIÓN (SEEDER)
-            using (var scope = _host.Services.CreateScope())
+            using (var scope = AppHost.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
                 
@@ -81,7 +82,7 @@ namespace Gym.UI
             }
 
             // Pedimos la LoginView al contenedor y la mostramos
-            var loginWindow = _host.Services.GetRequiredService<Gym.UI.Views.LoginView>();
+            var loginWindow = AppHost.Services.GetRequiredService<Gym.UI.Views.LoginView>();
             loginWindow.Show();
 
             base.OnStartup(e);
@@ -90,9 +91,10 @@ namespace Gym.UI
         protected override async void OnExit(ExitEventArgs e)
         {
             // Apagamos el host de forma limpia para liberar recursos (como la conexión a la DB)
-            using (_host)
+            if (AppHost != null)
             {
-                await _host.StopAsync();
+                await AppHost.StopAsync();
+                AppHost.Dispose();
             }
 
             base.OnExit(e);
