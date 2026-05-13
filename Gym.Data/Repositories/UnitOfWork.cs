@@ -9,6 +9,10 @@ namespace Gym.Data.Repositories
         private readonly GymDbContext _context;
         public IUserRepository Users { get; }
 
+        public IMemberRepository Members { get; }
+        
+            
+
 
         public UnitOfWork(GymDbContext context)
         {
@@ -17,6 +21,7 @@ namespace Gym.Data.Repositories
             _context = context;
 
             Users  = new UserRepository(_context);
+            Members = new MemberRepository(_context);
         }
          
         public async Task<int> SaveChangesAsync()
