@@ -27,15 +27,14 @@ namespace Gym.Business.LogicResults
         }
 
 
-        public static OperationResult<T> Fail( string Message)
+        public static OperationResult<T> Fail(string message)
         {
-            var Result = new OperationResult<T>();
-            Result.Success = false;
-            Result.Message = Message;
-            Result.Errors.Add(Message);
+            var result = new OperationResult<T>();
+            result.Success = false;
+            result.Message = message;
+            result.Errors.Add(message);
            
-            return Result;
-
+            return result;
         }
     }
 }
