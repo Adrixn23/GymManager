@@ -8,6 +8,7 @@
 
     <!-- Estilos base para los botones del menú -->
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="MenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#A0A0B5"/>
@@ -171,8 +172,18 @@
                     <DropShadowEffect Color="#E5E8F0" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
                 </Border.Effect>
                 <Grid Margin="30,0">
-                    <TextBlock Text="Dashboard" FontSize="22" FontWeight="Bold" Foreground="#1C1833" VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding CurrentDate}" FontSize="14" Foreground="#888C9B" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                    <TextBlock Text="Dashboard" FontSize="22" FontWeight="Bold" Foreground="#1C1833" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="+ Nuevo Socio" Click="OpenAddMember_Click" Background="#5C4DFF" Foreground="White" FontWeight="SemiBold" Padding="15,8" BorderThickness="0" Cursor="Hand" Margin="0,0,20,0">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="6"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        <TextBlock Text="{Binding CurrentDate}" FontSize="14" Foreground="#888C9B" VerticalAlignment="Center" />
+                    </StackPanel>
                 </Grid>
             </Border>
 
@@ -195,7 +206,7 @@
                                 <Border Width="40" Height="40" CornerRadius="8" Background="#EBF4FF" HorizontalAlignment="Left" Margin="0,0,0,15">
                                     <TextBlock Text="👤" Foreground="#3B82F6" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
-                                <TextBlock Text="142" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
+                                <TextBlock Text="{Binding ActiveMembersCount}" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
                                 <TextBlock Text="Socios activos" FontSize="14" Foreground="#888C9B" Margin="0,0,0,15" />
                                 <Border Background="#E6F7F0" CornerRadius="12" HorizontalAlignment="Left" Padding="10,4">
                                     <TextBlock Text="↑ Al día" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
@@ -207,10 +218,10 @@
                         <Border Style="{StaticResource CardStyle}" Grid.Column="1" Margin="10,0,10,0">
                             <StackPanel>
                                 <TextBlock Text="$" Foreground="#10B981" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,15" />
-                                <TextBlock Text="RD$8,400" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
+                                <TextBlock Text="RD$0" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
                                 <TextBlock Text="Ingresos hoy" FontSize="14" Foreground="#888C9B" Margin="0,0,0,15" />
                                 <Border Background="#E6F7F0" CornerRadius="12" HorizontalAlignment="Left" Padding="10,4">
-                                    <TextBlock Text="↑ 12%" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
+                                    <TextBlock Text="↑ 0%" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -219,10 +230,10 @@
                         <Border Style="{StaticResource CardStyle}" Grid.Column="2" Margin="10,0,10,0">
                             <StackPanel>
                                 <TextBlock Text="⬡" Foreground="#F59E0B" FontSize="32" Margin="0,-5,0,10" />
-                                <TextBlock Text="3" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
+                                <TextBlock Text="0" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
                                 <TextBlock Text="Stock bajo" FontSize="14" Foreground="#888C9B" Margin="0,0,0,15" />
                                 <Border Background="#FEF3C7" CornerRadius="12" HorizontalAlignment="Left" Padding="10,4">
-                                    <TextBlock Text="⚠ Revisar" Foreground="#D97706" FontSize="12" FontWeight="SemiBold" />
+                                    <TextBlock Text="✓ OK" Foreground="#D97706" FontSize="12" FontWeight="SemiBold" />
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -233,10 +244,10 @@
                                 <Border Width="40" Height="40" CornerRadius="8" Background="#FEF2F2" HorizontalAlignment="Left" Margin="0,0,0,15">
                                     <TextBlock Text="🔧" Foreground="#EF4444" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
-                                <TextBlock Text="2" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
+                                <TextBlock Text="0" FontSize="28" FontWeight="Bold" Foreground="#1C1833" />
                                 <TextBlock Text="Mantenimientos" FontSize="14" Foreground="#888C9B" Margin="0,0,0,15" />
-                                <Border Background="#FEF2F2" CornerRadius="12" HorizontalAlignment="Left" Padding="10,4">
-                                    <TextBlock Text="! Urgente" Foreground="#EF4444" FontSize="12" FontWeight="SemiBold" />
+                                <Border Background="#E6F7F0" CornerRadius="12" HorizontalAlignment="Left" Padding="10,4">
+                                    <TextBlock Text="✓ Al día" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
                                 </Border>
                             </StackPanel>
                         </Border>
@@ -267,75 +278,73 @@
                             
                             <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="#F0F2F8" Margin="0" />
 
-                            <!-- Filas (Mocks) -->
-                            <StackPanel Grid.Row="1">
-                                <!-- Fila 1 -->
-                                <Grid Height="60" Margin="25,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Juan Pérez" Foreground="#1C1833" VerticalAlignment="Center" Grid.Column="0" />
-                                    <TextBlock Text="Mensual" Foreground="#555870" VerticalAlignment="Center" Grid.Column="1" />
-                                    <TextBlock Text="15 May 2026" Foreground="#555870" VerticalAlignment="Center" Grid.Column="2" />
-                                    <Border Background="#E6F7F0" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,4" Grid.Column="3">
-                                        <TextBlock Text="● Activo" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
-                                    </Border>
-                                </Grid>
-                                <Separator Background="#F0F2F8" Margin="0" />
+                            <!-- Lista Dinámica con ItemsControl -->
+                            <ItemsControl Grid.Row="1" ItemsSource="{Binding Members}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Grid Height="60" Margin="25,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding FullName}" Foreground="#1C1833" VerticalAlignment="Center" Grid.Column="0" />
+                                                <TextBlock Text="{Binding PlanType}" Foreground="#555870" VerticalAlignment="Center" Grid.Column="1" />
+                                                <TextBlock Text="{Binding ExpirationDate, StringFormat='dd MMM yyyy'}" Foreground="#555870" VerticalAlignment="Center" Grid.Column="2" />
+                                                <Border CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,4" Grid.Column="3">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#F3F4F6"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding MembershipStatus}" Value="Activo">
+                                                                    <Setter Property="Background" Value="#E6F7F0"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding MembershipStatus}" Value="Vencido">
+                                                                    <Setter Property="Background" Value="#FEF2F2"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                    <TextBlock Text="{Binding MembershipStatus}" FontSize="12" FontWeight="SemiBold">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Foreground" Value="#6B7280"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding MembershipStatus}" Value="Activo">
+                                                                        <Setter Property="Foreground" Value="#10B981"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding MembershipStatus}" Value="Vencido">
+                                                                        <Setter Property="Foreground" Value="#EF4444"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Border>
+                                            </Grid>
+                                            <Separator Background="#F0F2F8" Margin="0" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
 
-                                <!-- Fila 2 -->
-                                <Grid Height="60" Margin="25,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="María López" Foreground="#1C1833" VerticalAlignment="Center" Grid.Column="0" />
-                                    <TextBlock Text="Mensual" Foreground="#555870" VerticalAlignment="Center" Grid.Column="1" />
-                                    <TextBlock Text="02 May 2026" Foreground="#555870" VerticalAlignment="Center" Grid.Column="2" />
-                                    <Border Background="#FEF2F2" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,4" Grid.Column="3">
-                                        <TextBlock Text="● Vencido" Foreground="#EF4444" FontSize="12" FontWeight="SemiBold" />
-                                    </Border>
-                                </Grid>
-                                <Separator Background="#F0F2F8" Margin="0" />
-
-                                <!-- Fila 3 -->
-                                <Grid Height="60" Margin="25,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Carlos Díaz" Foreground="#1C1833" VerticalAlignment="Center" Grid.Column="0" />
-                                    <TextBlock Text="Trimestral" Foreground="#555870" VerticalAlignment="Center" Grid.Column="1" />
-                                    <TextBlock Text="30 Jun 2026" Foreground="#555870" VerticalAlignment="Center" Grid.Column="2" />
-                                    <Border Background="#E6F7F0" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,4" Grid.Column="3">
-                                        <TextBlock Text="● Activo" Foreground="#10B981" FontSize="12" FontWeight="SemiBold" />
-                                    </Border>
-                                </Grid>
-                                <Separator Background="#F0F2F8" Margin="0" />
-
-                                <!-- Fila 4 -->
-                                <Grid Height="60" Margin="25,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1.5*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Ana Martínez" Foreground="#1C1833" VerticalAlignment="Center" Grid.Column="0" />
-                                    <TextBlock Text="Mensual" Foreground="#555870" VerticalAlignment="Center" Grid.Column="1" />
-                                    <TextBlock Text="10 May 2026" Foreground="#555870" VerticalAlignment="Center" Grid.Column="2" />
-                                    <Border Background="#F3F4F6" CornerRadius="12" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="10,4" Grid.Column="3">
-                                        <TextBlock Text="● Suspendido" Foreground="#6B7280" FontSize="12" FontWeight="SemiBold" />
-                                    </Border>
-                                </Grid>
-                            </StackPanel>
+                            <!-- Mensaje si no hay socios -->
+                            <TextBlock Text="No hay socios registrados." 
+                                       Visibility="{Binding Members.Count, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                                       Foreground="#888C9B" HorizontalAlignment="Center" Margin="0,30" Grid.Row="1">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Members.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Grid>
                     </Border>
                     

@@ -1,11 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Gym.Business.DTOs;
+using Gym.Business.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Gym.UI.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        private readonly IMemberService _memberService;
+
         [ObservableProperty]
         private string _userFullName = string.Empty;
 
@@ -18,11 +25,18 @@ namespace Gym.UI.ViewModels
         [ObservableProperty]
         private string _currentDate = string.Empty;
 
-        public MainViewModel()
+        // Lista real de socios para la UI
+        public ObservableCollection<MemberDTO> Members { get; } = new();
+
+        [ObservableProperty]
+        private int _activeMembersCount;
+
+        public MainViewModel(IMemberService memberService)
         {
-            // Fecha formateada, ej: Domingo, 10 de Mayo 2026
+            _memberService = memberService;
+            
+            // Fecha formateada
             CurrentDate = DateTime.Now.ToString("dddd, dd 'de' MMMM yyyy", new System.Globalization.CultureInfo("es-ES"));
-            // Capitalizar primera letra
             if (!string.IsNullOrEmpty(CurrentDate))
             {
                 CurrentDate = char.ToUpper(CurrentDate[0]) + CurrentDate.Substring(1);
@@ -34,7 +48,6 @@ namespace Gym.UI.ViewModels
             UserFullName = fullName;
             UserRole = role;
             
-            // Calcular iniciales (ej: "Adrian Brito" -> "AB")
             var names = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (names.Length >= 2)
             {
@@ -47,6 +60,24 @@ namespace Gym.UI.ViewModels
             else
             {
                 Initials = "AD";
+            }
+
+            // Cargamos los datos reales al iniciar
+            _ = LoadDashboardDataAsync();
+        }
+
+        public async Task LoadDashboardDataAsync()
+        {
+            var result = await _memberService.GetAllMembersAsync();
+            if (result.Success)
+            {
+                Members.Clear();
+                foreach (var member in result.Data)
+                {
+                    Members.Add(member);
+                }
+                
+                ActiveMembersCount = Members.Count(m => m.MembershipStatus == "Activo");
             }
         }
     }

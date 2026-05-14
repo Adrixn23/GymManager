@@ -35,12 +35,15 @@ namespace Gym.UI
                     services.AddTransient<Gym.UI.Views.LoginView>();
                     services.AddTransient<Gym.UI.ViewModels.LoginViewModel>();
                     services.AddTransient<Gym.UI.ViewModels.MainViewModel>();
+                    services.AddTransient<Gym.UI.Views.AddMemberWindow>();
+                    services.AddTransient<Gym.UI.ViewModels.AddMemberViewModel>();
 
                     // 3. Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
                     services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
 
                     // 4. Registrar el Servicio de Negocio
                     services.AddScoped<Gym.Business.Interfaces.IAuthService, Gym.Business.Services.AuthService>();
+                    services.AddScoped<Gym.Business.Interfaces.IMemberService, Gym.Business.Services.MemberService>();
                 })
                 .Build();
         }
