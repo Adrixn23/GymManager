@@ -9,6 +9,7 @@ namespace Gym.Data.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository Users { get; }
+        IMemberRepository Members { get; }
 
         Task<int> SaveChangesAsync();
 

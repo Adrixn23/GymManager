@@ -27,11 +27,15 @@ namespace Gym.Data.Repositories
         public async Task AddAsync(Member member)
         {
             await _context.Members.AddAsync(member);
+
+
         }
 
         public async Task<IEnumerable<Member>> GetAllAsync()
         {
             return await _context.Members.ToListAsync();
+
+
         }
 
         public async Task<Member?> GetByIdAsync(int id)
