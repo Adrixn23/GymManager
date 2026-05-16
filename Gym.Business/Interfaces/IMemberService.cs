@@ -19,6 +19,10 @@ namespace Gym.Business.Interfaces
         Task<OperationResult<MemberDTO>> GetMemberByIdAsync(int memberId);
 
         Task<OperationResult<MemberDTO>> UpdateMemberAsync(MemberDTO member);
+
+        Task<OperationResult<bool>> RenewMemberAsync(int memberId, int monthsToAdd);
+
+        Task<OperationResult<bool>> DeactivateMemberAsync(int memberId);
     }
 }
 

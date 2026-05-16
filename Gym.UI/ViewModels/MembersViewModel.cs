@@ -58,5 +58,47 @@ namespace Gym.UI.ViewModels
                 await LoadDataAsync();
             }
         }
+
+        [RelayCommand]
+        private async Task EditMemberAsync(MemberDTO member)
+        {
+            if (member == null) return;
+
+            var editWindow = App.AppHost!.Services.GetRequiredService<Views.EditMemberWindow>();
+            editWindow.Owner = App.Current.MainWindow;
+            
+            var vm = (EditMemberViewModel)editWindow.DataContext;
+            vm.LoadMember(member);
+
+            if (editWindow.ShowDialog() == true)
+            {
+                await LoadDataAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task RenewMemberAsync(MemberDTO member)
+        {
+            if (member == null) return;
+
+            var result = await _memberService.RenewMemberAsync(member.MemberId, 1);
+            if (result.Success)
+            {
+                await LoadDataAsync();
+            }
+            // Podrías agregar un MessageBox para mostrar el mensaje de error si falla
+        }
+
+        [RelayCommand]
+        private async Task DeactivateMemberAsync(MemberDTO member)
+        {
+            if (member == null) return;
+
+            var result = await _memberService.DeactivateMemberAsync(member.MemberId);
+            if (result.Success)
+            {
+                await LoadDataAsync();
+            }
+        }
     }
 }

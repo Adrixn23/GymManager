@@ -7,6 +7,10 @@
              d:DesignHeight="600" d:DesignWidth="800"
              Background="Transparent">
     
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -147,8 +151,23 @@
                                                 </TextBlock>
                                             </Border>
                                             
-                                            <!-- Actions Menu Button (Placeholder for Edit/Renew/Delete) -->
-                                            <Button Content="⋮" Grid.Column="4" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="#888C9B" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5,0"/>
+                                            <!-- Actions Menu Button -->
+                                            <Button Content="⋮" Grid.Column="4" Background="Transparent" BorderThickness="0" FontSize="18" Foreground="#888C9B" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5,0" Click="MenuButton_Click"
+                                                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                <Button.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="Editar" 
+                                                                  Command="{Binding PlacementTarget.Tag.EditMemberCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
+                                                                  CommandParameter="{Binding}" />
+                                                        <MenuItem Header="Renovar (1 Mes)" 
+                                                                  Command="{Binding PlacementTarget.Tag.RenewMemberCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
+                                                                  CommandParameter="{Binding}" />
+                                                        <MenuItem Header="Desactivar" 
+                                                                  Command="{Binding PlacementTarget.Tag.DeactivateMemberCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
+                                                                  CommandParameter="{Binding}" />
+                                                    </ContextMenu>
+                                                </Button.ContextMenu>
+                                            </Button>
                                         </Grid>
                                         <Separator Background="#F0F2F8" Margin="0" />
                                     </StackPanel>

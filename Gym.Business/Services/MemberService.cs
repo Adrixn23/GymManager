@@ -104,5 +104,43 @@ namespace Gym.Business.Services
 
             return OperationResult<MemberDTO>.Ok(member, "Socio actualizado correctamente");
         }
+
+        public async Task<OperationResult<bool>> RenewMemberAsync(int memberId, int monthsToAdd)
+        {
+            var existing = await _unitOfWork.Members.GetByIdAsync(memberId);
+            if (existing == null)
+                return OperationResult<bool>.Fail("Socio no encontrado");
+
+            // Si ya estaba vencido, renovamos a partir de hoy. Si estaba activo, le sumamos a su fecha actual.
+            if (existing.ExpirationDate < DateTime.Now)
+            {
+                existing.ExpirationDate = DateTime.Now.AddMonths(monthsToAdd);
+            }
+            else
+            {
+                existing.ExpirationDate = existing.ExpirationDate.AddMonths(monthsToAdd);
+            }
+
+            existing.MembershipStatus = "Activo";
+
+            await _unitOfWork.Members.UpdateAsync(existing);
+            await _unitOfWork.SaveChangesAsync();
+
+            return OperationResult<bool>.Ok(true, "Membresía renovada exitosamente");
+        }
+
+        public async Task<OperationResult<bool>> DeactivateMemberAsync(int memberId)
+        {
+            var existing = await _unitOfWork.Members.GetByIdAsync(memberId);
+            if (existing == null)
+                return OperationResult<bool>.Fail("Socio no encontrado");
+
+            existing.MembershipStatus = "Inactivo";
+
+            await _unitOfWork.Members.UpdateAsync(existing);
+            await _unitOfWork.SaveChangesAsync();
+
+            return OperationResult<bool>.Ok(true, "Socio desactivado exitosamente");
+        }
     }
 }

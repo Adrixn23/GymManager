@@ -39,6 +39,8 @@ namespace Gym.UI
                     services.AddTransient<Gym.UI.ViewModels.MembersViewModel>();
                     services.AddTransient<Gym.UI.Views.AddMemberWindow>();
                     services.AddTransient<Gym.UI.ViewModels.AddMemberViewModel>();
+                    services.AddTransient<Gym.UI.Views.EditMemberWindow>();
+                    services.AddTransient<Gym.UI.ViewModels.EditMemberViewModel>();
 
                     // Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
                     services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
