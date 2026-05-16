@@ -1,18 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Gym.Business.DTOs;
 using Gym.Business.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Gym.UI.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private readonly IMemberService _memberService;
-
         [ObservableProperty]
         private string _userFullName = string.Empty;
 
@@ -23,24 +20,19 @@ namespace Gym.UI.ViewModels
         private string _initials = string.Empty;
 
         [ObservableProperty]
-        private string _currentDate = string.Empty;
+        private ObservableObject? _currentViewModel;
 
-        // Lista real de socios para la UI
-        public ObservableCollection<MemberDTO> Members { get; } = new();
+        // Propiedades para controlar el estilo activo de los botones del menú
+        [ObservableProperty]
+        private bool _isDashboardActive = true;
 
         [ObservableProperty]
-        private int _activeMembersCount;
+        private bool _isMembersActive = false;
 
-        public MainViewModel(IMemberService memberService)
+        public MainViewModel()
         {
-            _memberService = memberService;
-            
-            // Fecha formateada
-            CurrentDate = DateTime.Now.ToString("dddd, dd 'de' MMMM yyyy", new System.Globalization.CultureInfo("es-ES"));
-            if (!string.IsNullOrEmpty(CurrentDate))
-            {
-                CurrentDate = char.ToUpper(CurrentDate[0]) + CurrentDate.Substring(1);
-            }
+            // Inicializar con el Dashboard
+            NavigateToDashboard();
         }
 
         public void Initialize(string fullName, string role)
@@ -61,24 +53,28 @@ namespace Gym.UI.ViewModels
             {
                 Initials = "AD";
             }
-
-            // Cargamos los datos reales al iniciar
-            _ = LoadDashboardDataAsync();
         }
 
-        public async Task LoadDashboardDataAsync()
+        [RelayCommand]
+        private void NavigateToDashboard()
         {
-            var result = await _memberService.GetAllMembersAsync();
-            if (result.Success)
-            {
-                Members.Clear();
-                foreach (var member in result.Data)
-                {
-                    Members.Add(member);
-                }
-                
-                ActiveMembersCount = Members.Count(m => m.MembershipStatus == "Activo");
-            }
+            IsDashboardActive = true;
+            IsMembersActive = false;
+            
+            var vm = App.AppHost!.Services.GetRequiredService<DashboardViewModel>();
+            _ = vm.LoadDataAsync();
+            CurrentViewModel = vm;
+        }
+
+        [RelayCommand]
+        private void NavigateToMembers()
+        {
+            IsDashboardActive = false;
+            IsMembersActive = true;
+            
+            var vm = App.AppHost!.Services.GetRequiredService<MembersViewModel>();
+            _ = vm.LoadDataAsync();
+            CurrentViewModel = vm;
         }
     }
 }
