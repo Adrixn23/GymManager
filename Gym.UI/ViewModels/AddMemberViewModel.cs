@@ -29,7 +29,6 @@ namespace Gym.UI.ViewModels
         [ObservableProperty]
         private bool _isBusy;
 
-        // Acción para cerrar la ventana desde el ViewModel
         public Action? CloseAction { get; set; }
 
         public AddMemberViewModel(IMemberService memberService)
@@ -63,7 +62,7 @@ namespace Gym.UI.ViewModels
 
             if (result.Success)
             {
-                CloseAction?.Invoke(); // Cierra la ventana si fue exitoso
+                CloseAction?.Invoke();
             }
             else
             {

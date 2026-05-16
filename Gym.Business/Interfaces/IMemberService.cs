@@ -12,18 +12,13 @@ namespace Gym.Business.Interfaces
 {
     public interface IMemberService
     {
-        Task<OperationResult<MemberDTO>> RegisterMemberAsync(MemberDTO member); // registrar nuevo socio
+        Task<OperationResult<MemberDTO>> RegisterMemberAsync(MemberDTO member);
 
-        Task<OperationResult<IEnumerable<MemberDTO>>> GetAllMembersAsync(); // devolver o obtener todos los miembros. 
+        Task<OperationResult<IEnumerable<MemberDTO>>> GetAllMembersAsync();
 
+        Task<OperationResult<MemberDTO>> GetMemberByIdAsync(int memberId);
 
-        Task<OperationResult<MemberDTO>> GetMemberByIdAsync(int memberId); // obtener por ID unico
-
-        Task<OperationResult<MemberDTO>> UpdateMemberAsync(MemberDTO member); // actualizar miembro
-
-
-
-
+        Task<OperationResult<MemberDTO>> UpdateMemberAsync(MemberDTO member);
     }
 }
 

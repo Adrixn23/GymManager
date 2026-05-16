@@ -10,9 +10,8 @@ namespace Gym.UI.Views
             InitializeComponent();
             DataContext = viewModel;
             
-            // Le decimos al ViewModel cómo cerrar esta ventana cuando termine
             viewModel.CloseAction = () => {
-                this.DialogResult = true; // Indica que se guardó correctamente
+                this.DialogResult = true;
                 this.Close();
             };
         }

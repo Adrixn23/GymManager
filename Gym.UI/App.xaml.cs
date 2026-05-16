@@ -86,7 +86,6 @@ namespace Gym.UI
                 }
             }
 
-            // Pedimos la LoginView al contenedor y la mostramos
             var loginWindow = AppHost.Services.GetRequiredService<Gym.UI.Views.LoginView>();
             loginWindow.Show();
 

@@ -62,7 +62,6 @@ namespace Gym.Business.Services
 
         public async Task<OperationResult<MemberDTO>> RegisterMemberAsync(MemberDTO member)
         {
-            // Lógica de negocio: Calculamos las fechas automáticamente
             var newMember = new Member
             {
                 FullName = member.FullName,
@@ -79,7 +78,6 @@ namespace Gym.Business.Services
             await _unitOfWork.Members.AddAsync(newMember);
             await _unitOfWork.SaveChangesAsync();
 
-            // Devolvemos el DTO actualizado
             member.MemberId = newMember.MemberId;
             member.ExpirationDate = newMember.ExpirationDate;
             member.MembershipStatus = newMember.MembershipStatus;

@@ -8,7 +8,6 @@ namespace Gym.UI
         public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            // Esto conecta tu lógica (ViewModel) con la interfaz
             DataContext = viewModel;
         }
     }
