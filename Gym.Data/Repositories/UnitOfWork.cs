@@ -10,9 +10,10 @@ namespace Gym.Data.Repositories
         public IUserRepository Users { get; }
 
         public IMemberRepository Members { get; }
-        
-            
 
+
+        public IPaymentRepository Payments { get; }
+        
 
         public UnitOfWork(GymDbContext context)
         {
@@ -22,6 +23,7 @@ namespace Gym.Data.Repositories
 
             Users  = new UserRepository(_context);
             Members = new MemberRepository(_context);
+            Payments = new PaymentRepository(_context);
         }
          
         public async Task<int> SaveChangesAsync()
