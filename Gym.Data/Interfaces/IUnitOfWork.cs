@@ -10,6 +10,7 @@ namespace Gym.Data.Interfaces
     {
         IUserRepository Users { get; }
         IMemberRepository Members { get; }
+        IPaymentRepository Payments { get; }
 
         Task<int> SaveChangesAsync();
 

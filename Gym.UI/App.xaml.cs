@@ -45,9 +45,13 @@ namespace Gym.UI
                     // Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
                     services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
 
-                    //egistrar el Servicio de Negocio
+                    // Registrar Repositorios individuales para que el UnitOfWork pueda crearlos
+                    services.AddScoped<Gym.Data.Interfaces.IPaymentRepository, Gym.Data.Repositories.PaymentRepository>();
+
+                    // Registrar los Servicios de Negocio
                     services.AddScoped<Gym.Business.Interfaces.IAuthService, Gym.Business.Services.AuthService>();
                     services.AddScoped<Gym.Business.Interfaces.IMemberService, Gym.Business.Services.MemberService>();
+                    services.AddScoped<Gym.Business.Interfaces.IPaymentService, Gym.Business.Services.PaymentService>();
                 })
                 .Build();
         }
