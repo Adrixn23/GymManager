@@ -1,7 +1,5 @@
 using System.IO;
 using System.Windows;
-using Gym.Data.Context;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,11 +22,9 @@ namespace Gym.UI
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    
-                    string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
-                    
-                    services.AddDbContext<GymDbContext>(options =>
-                        options.UseSqlServer(connectionString));
+                    // TODO: Move connection string and DbContext registration to Gym.IoC
+                    // string connectionString = context.Configuration.GetConnectionString("DefaultConnection")!;
+                    // services.AddDbContext<GymDbContext>(options => options.UseSqlServer(connectionString));
 
                     // Registramos nuestras Ventanas (Windows) para que el DI pueda crearlas
                     services.AddSingleton<MainWindow>();
@@ -42,16 +38,17 @@ namespace Gym.UI
                     services.AddTransient<Gym.UI.Views.EditMemberWindow>();
                     services.AddTransient<Gym.UI.ViewModels.EditMemberViewModel>();
 
+                    // TODO: Configure all these in Gym.IoC Project
                     // Registrar el UnitOfWork (Scoped para que viva durante la petición/transacción)
-                    services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
+                    // services.AddScoped<Gym.Data.Interfaces.IUnitOfWork, Gym.Data.Repositories.UnitOfWork>();
 
                     // Registrar Repositorios individuales para que el UnitOfWork pueda crearlos
-                    services.AddScoped<Gym.Data.Interfaces.IPaymentRepository, Gym.Data.Repositories.PaymentRepository>();
+                    // services.AddScoped<Gym.Data.Interfaces.IPaymentRepository, Gym.Data.Repositories.PaymentRepository>();
 
                     // Registrar los Servicios de Negocio
-                    services.AddScoped<Gym.Business.Interfaces.IAuthService, Gym.Business.Services.AuthService>();
-                    services.AddScoped<Gym.Business.Interfaces.IMemberService, Gym.Business.Services.MemberService>();
-                    services.AddScoped<Gym.Business.Interfaces.IPaymentService, Gym.Business.Services.PaymentService>();
+                    // services.AddScoped<Gym.Core.Application.Contracts.IAuthService, Gym.Core.Application.Services.AuthService>();
+                    // services.AddScoped<Gym.Core.Application.Contracts.IMemberService, Gym.Core.Application.Services.MemberService>();
+                    // services.AddScoped<Gym.Core.Application.Contracts.IPaymentService, Gym.Core.Application.Services.PaymentService>();
                 })
                 .Build();
         }
@@ -61,19 +58,17 @@ namespace Gym.UI
             // Arrancamos el host
             await AppHost!.StartAsync();
 
-        
+            /* TODO: Move this seed logic to Gym.Infrastructure.Identity.Seeds
             using (var scope = AppHost.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<GymDbContext>();
                 
-              
                 if (!await dbContext.Users.AnyAsync())
                 {
-                    
                     string salt = BCrypt.Net.BCrypt.GenerateSalt(12);
                     string hash = BCrypt.Net.BCrypt.HashPassword("admin123", salt);
 
-                    var adminUser = new Gym.Domain.Entities.User
+                    var adminUser = new Gym.Core.Domain.Entities.User
                     {
                         Username = "admin",
                         PasswordHash = hash,
@@ -91,6 +86,7 @@ namespace Gym.UI
                     await dbContext.SaveChangesAsync();
                 }
             }
+            */
 
             var loginWindow = AppHost.Services.GetRequiredService<Gym.UI.Views.LoginView>();
             loginWindow.Show();

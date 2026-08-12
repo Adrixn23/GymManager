@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Gym.Business.DTOs;
-using Gym.Business.Interfaces;
+using Gym.Core.Application.DTOs;
+using Gym.Core.Application.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Linq;

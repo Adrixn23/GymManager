@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Gym.Business.Interfaces;
+using Gym.Core.Application.Contracts;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
