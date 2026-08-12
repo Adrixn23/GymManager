@@ -1,4 +1,4 @@
-namespace Gym.Business.DTOs
+namespace Gym.Core.Application.DTOs
 {
     public class UserDTO
     {

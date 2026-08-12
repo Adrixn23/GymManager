@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gym.Business\Gym.Business.csproj" />
-    <ProjectReference Include="..\Gym.Data\Gym.Data.csproj" />
-  
+    <ProjectReference Include="..\Gym.Core.Application\Gym.Core.Application.csproj" />
+    <ProjectReference Include="..\Gym.Core.Domain\Gym.Core.Domain.csproj" />
+    <ProjectReference Include="..\Gym.IoC\Gym.IoC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
