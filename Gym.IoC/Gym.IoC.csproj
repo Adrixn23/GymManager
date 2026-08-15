@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gym.Core.Application\Gym.Core.Application.csproj" />
+    <ProjectReference Include="..\Gym.Infrastructure.Persistence\Gym.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\Gym.Infrastructure.Identity\Gym.Infrastructure.Identity.csproj" />
+    <ProjectReference Include="..\Gym.Infrastructure.Shared\Gym.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
